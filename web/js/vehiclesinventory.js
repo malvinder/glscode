@@ -75,6 +75,12 @@ function getVehicleDetails(vinNo) {
                 $.each(vehiclePlateAssigneds, function (index, value) {
                     $(':input[name="VehiclePlateAssigned[' + index + ']"]').val(value);
                 });
+
+                var events = response.vehicle.events;
+
+                $.each(events, function (index, value) {
+                    $(':input[name="Events[' + index + ']"]').val(value);
+                });
             }
             else {
                 alert(response.message);
@@ -106,41 +112,14 @@ $(document).on('change','.eventDropDownInVehiclesInfo', function(){
 
             if (response.status == '1') {
                 // Vehicle Inventory
-                var vehicleInventory = response.vehicle.inventory;
+                var events = response.Events;
 
-                $.each(vehicleInventory, function (index, value) {
-                    $(':input[name="VehicleInventory[' + index + ']"]').val(value);
-                });
-
-                // Vehicle History
-                var vehicleHistory = response.vehicle.history;
-
-                $.each(vehicleHistory, function (index, value) {
-                    $(':input[name="VehicleHistory[' + index + ']"]').val(value);
-                });
-
-
-                // Vehicle shipping
-                var vehicleShipping = response.vehicle.shipping;
-
-                $.each(vehicleShipping, function (index, value) {
-                    $(':input[name="VehicleShipping[' + index + ']"]').val(value);
-                });
-
-
-                // Vehicle plating
-                var vehiclePlateAssigneds = response.vehicle.plateAssigneds;
-
-                $.each(vehiclePlateAssigneds, function (index, value) {
-                    $(':input[name="VehiclePlateAssigned[' + index + ']"]').val(value);
+                $.each(events, function (index, value) {
+                    $(':input[name="Events[' + index + ']"]').val(value);
                 });
             }
             else {
                 alert(response.message);
-                $('.vehiclesInventoryForm')[0].reset();
-                $('.vinNumber').focus();
-
-
             }
         }
     });

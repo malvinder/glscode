@@ -110,107 +110,160 @@ use yii\helpers\ArrayHelper;
 
                 </div>
                 <div role="tabpanel" class="tab-pane" id="addAppointment">
-                        <div class="col-sm-6">
-                            <div class="panel panel-default">
-                                <div class="panel-heading font-bold">Add Vehicles Appointment</div>
-                                <div class="panel-body">
+                <div class="bg-light lter b-b wrapper-md">
+                    <h1 class="m-n font-thin h3">Add Vehicles Appointment</h1>
+                </div>
+                <div class="wrapper-md">
 
-                                    <?php $form = ActiveForm::begin(
-                                        ['options' => [
-                                            'class' => 'addvehiclesAppointmentForm'
-                                        ]
-                                        ]);?>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Add Vehicles Appointment
+                    </div>
+                    <div class="row wrapper">
+                        <div class="col-sm-3 m-b-xs">
 
-                                    <fieldset>
-                                        <legend>Appointment</legend>
-                                    <div class="form-group">
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <?= Html::Button('Schedule Porter', ['class' => 'btn btn-primary']); ?>
 
-                                        <?= $form->field($model, 'vin_drop_down')->dropDownList(ArrayHelper::map($allVinNumber, 'id', 'vin'), ['prompt' => '--Choose Type--', 'name'=> 'VehiclesAppointmentForm[0][vin_drop_down]','class' => 'searchByVinForAppointment', 'data-indexid' => 0])->label('Select Vin'); ?>
-                                    </div>
-                                    <div class="form-group">
-                                        <?= $form->field($model, 'vehicle_id')->hiddenInput(['name' =>'VehiclesAppointmentForm[0][vehicle_id]'])->label(false); ?>
-
-
-
-                                        <?= $form->field($model, 'vin')->textInput(['disabled'=> 'disabled', 'name' => 'VehiclesAppointmentForm[0][vin]']); ?>
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <?= $form->field($model, 'transport_type')->textInput(['value'=> 'shipment', 'name' => 'VehiclesAppointmentForm[0][transport_type]']); ?>
-
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <?= $form->field($model, 'scheduled_date')->widget(\yii\jui\DatePicker::classname(),['dateFormat' => 'yyyy-MM-dd','options' => [
-                                            'name' => 'VehiclesAppointmentForm[0][scheduled_date]']]); ?>
-                                    </div>
-                                    <div class="form-group">
-                                        <!-- pickup date -->
-                                        <?= $form->field($model, 'pick_up_date')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd', 'options' => [
-                                            'name' => 'VehiclesAppointmentForm[0][pick_up_date]' , 'id' => 'vehiclesappointmentform-pick_up_date']]); ?>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <!-- delivery date -->
-                                        <?= $form->field($model, 'delivery_date')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd', 'options' => [
-                                            'name' => 'VehiclesAppointmentForm[0][delivery_date]', 'id' => 'vehiclesappointmentform-delivery_date']]); ?>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <!-- fuel level  -->
-                                        <?= $form->field($model, 'prep_level')->textInput(['name' => 'VehiclesAppointmentForm[0][prep_level]']); ?>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <!-- fuel level  -->
-                                        <?= $form->field($model, 'fuel_level')->textInput(['name' => 'VehiclesAppointmentForm[0][fuel_level]']); ?>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <!-- return data -->
-                                        <?= $form->field($model, 'vehicle_returned')->textInput(['disabled' => 'disabled','name' => 'VehiclesAppointmentForm[0][vehicle_returned]']); ?>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <!-- return data -->
-                                        <?= $form->field($model, 'plate_number')->textInput(['disabled' => 'disabled', 'name' => 'VehiclesAppointmentForm[0][plate_number]']); ?>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <!-- client name -->
-                                        <?= $form->field($model, 'event_id')->hiddenInput(['name' => 'VehiclesAppointmentForm[0][event_id]'])->label(false); ?>
-                                        <?= $form->field($model, 'contact_name')->textInput(['disabled' => 'disabled', 'name' => 'VehiclesAppointmentForm[0][contact_name]']); ?>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <!-- coordinator -->
-                                        <?= $form->field($model, 'coordinator')->textInput(['disabled' => 'disabled', 'name' => 'VehiclesAppointmentForm[0][coordinator]']); ?>
-                                    </div>
-
-                                    <div class="form-group">
-
-                                        <?= $form->field($model, 'material_required')->dropDownList(array('no'),['name' => 'VehiclesAppointmentForm[0][material_required]']); ?>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <!-- coordinator -->
-                                        <?= $form->field($model, 'vdate')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd', 'options' => ['name' => 'VehiclesAppointmentForm[0][vdate]']]); ?>
-                                    </div>
-                                    </fieldset>
-
-                                    <div class="form-group">
-                                        <?= Html::Button('Add More', ['class' => 'btn btn-primary', 'id' => 'addMoreAppointment']); ?>
-                                    </div>
-                                    <div class="form-group">
-                                        <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
-                                    </div>
-
-                                    <?php ActiveForm::end(); ?>
-                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <?= Html::Button('View Porter Shippers', ['class' => 'btn btn-primary']); ?>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                        </div>
+                    </div>
+                    <?php $form = ActiveForm::begin(
+                        ['options' => [
+                            'class' => 'addvehiclesAppointmentForm'
+                        ]
+                        ]);?>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-striped b-t b-light">
+                            <thead>
+                            <tr>
+
+                                <th>Select Vin</th>
+                                <th><p>Vin</p><p>Transport Type</p></th>
+                                <th><p>Requested</p> <p>Date/Time</p></th>
+                                <th><p>Scheduled</p> <p>Date/Time</p></th>
+                                <th><p>Delivery </p> <p>Date/Time</p></th>
+                                <th><p>Pick Up </p> <p>Date/Time</p></th>
+                                <th><p>Prep Level</p> <p>Fuel Level</p></th>
+                                <th><p>Return date</p></th>
+                                <th><p>Plate Number</p></th>
+                                <th><p>Client Name</p></th>
+                                <th><p>Coordinator</p></th>
+                                <th><p>Material Required </p></th>
+                                <th><p>V Date</p></th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+
+                                <td><?= $form->field($model, 'vin_drop_down')->dropDownList(ArrayHelper::map($allVinNumber, 'id', 'vin'), ['prompt' => '--Choose Type--', 'name' => 'VehiclesAppointmentForm[0][vin_drop_down]', 'class' => 'searchByVinForAppointment', 'data-indexid' => 0])->label(false); ?></td>
+
+
+
+                                <td>
+                                    <?= $form->field($model, 'vehicle_id')->hiddenInput(['name' => 'VehiclesAppointmentForm[0][vehicle_id]'])->label(false); ?>
+                                    <p><?= $form->field($model, 'vin')->textInput(['disabled' => 'disabled', 'name' => 'VehiclesAppointmentForm[0][vin]'])->label(false); ?>
+                                    </p>
+                                    <p><?= $form->field($model, 'transport_type')->textInput(['value' => 'shipment', 'name' => 'VehiclesAppointmentForm[0][transport_type]'])->label(false); ?></p>
+                                </td>
+
+
+                                 <td>
+                                    <p><?= $form->field($model, 'requested_date')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd', 'options' => [
+                                            'name' => 'VehiclesAppointmentForm[0][requested_date]']])->label(false); ?></p>
+
+                                    <p><?= $form->field($model, 'requested_time')->textInput(['name' => 'VehiclesAppointmentForm[0][requested_time]'])->label(false); ?></p>
+                                </td>
+
+
+                                <td><p><?= $form->field($model, 'scheduled_date')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd', 'options' => [
+                                            'name' => 'VehiclesAppointmentForm[0][scheduled_date]']])->label(false); ?></p>
+                                <p><?= $form->field($model, 'scheduled_time')->textInput(['name' => 'VehiclesAppointmentForm[0][scheduled_time]'])->label(false); ?></p>
+                                </td>
+
+
+
+                                <td><p> <?= $form->field($model, 'delivery_date')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd', 'options' => [
+                                            'name' => 'VehiclesAppointmentForm[0][delivery_date]', 'id' => 'vehiclesappointmentform-delivery_date']])->label(false); ?></p>
+
+                                    <p><?= $form->field($model, 'delivery_time')->textInput(['name' => 'VehiclesAppointmentForm[0][delivery_time]'])->label(false); ?></p>
+                                </td>
+
+
+                                <td><p><?= $form->field($model, 'pick_up_date')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd', 'options' => [
+                                            'name' => 'VehiclesAppointmentForm[0][pick_up_date]', 'id' => 'vehiclesappointmentform-pick_up_date']])->label(false); ?></p>
+
+                                    <p><?= $form->field($model, 'pick_up_time')->textInput(['name' => 'VehiclesAppointmentForm[0][pick_up_time]'])->label(false); ?></p>
+                                </td>
+
+
+                                <td>
+                                    <p> <?= $form->field($model, 'prep_level')->textInput(['name' => 'VehiclesAppointmentForm[0][prep_level]'])->label(false); ?></p>
+
+                                    <p><?= $form->field($model, 'fuel_level')->textInput(['name' => 'VehiclesAppointmentForm[0][fuel_level]'])->label(false); ?></p>
+                                </td>
+                                <td><p><?= $form->field($model, 'vehicle_returned')->textInput(['disabled' => 'disabled', 'name' => 'VehiclesAppointmentForm[0][vehicle_returned]'])->label(false); ?></p></td>
+                                <td>
+                                    <p> <?= $form->field($model, 'plate_number')->textInput(['disabled' => 'disabled', 'name' => 'VehiclesAppointmentForm[0][plate_number]'])->label(false); ?></p>
+                                </td>
+
+                                <td>
+                                    <p><?= $form->field($model, 'event_id')->hiddenInput(['name' => 'VehiclesAppointmentForm[0][event_id]'])->label(false); ?>
+                                        <?= $form->field($model, 'contact_name')->textInput(['disabled' => 'disabled', 'name' => 'VehiclesAppointmentForm[0][contact_name]'])->label(false); ?></p>
+
+                                </td>
+
+                                <td>
+                                    <p><?= $form->field($model, 'coordinator')->textInput(['disabled' => 'disabled', 'name' => 'VehiclesAppointmentForm[0][coordinator]'])->label(false); ?></p>
+                                </td>
+
+                                <td>
+                                    <p>
+                                        <?= $form->field($model, 'material_required')->dropDownList(array('no'), ['name' => 'VehiclesAppointmentForm[0][material_required]'])->label(false); ?>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p> <?= $form->field($model, 'vdate')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd', 'options' => ['name' => 'VehiclesAppointmentForm[0][vdate]']])->label(false); ?></p>
+                                </td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <footer class="panel-footer">
+                        <div class="row">
+                            <div class="col-sm-4 hidden-xs">
+                                <?= Html::Button('Add More', ['class' => 'btn btn-primary', 'id' => 'addMoreAppointment']); ?>
+                            </div>
+                            <div class="col-sm-4 text-center">
+
+                            </div>
+                            <div class="col-sm-4 text-right text-center-xs">
+                                <div class="form-group">
+                                    <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']); ?>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </footer>
+                    <?php ActiveForm::end(); ?>
+                </div>
+                </div>
                     </div>
                 <div role="tabpanel" class="tab-pane <?php if ($tab == 3) echo 'active'; ?>" id="listOfAppointment">
                     <div class="bg-light lter b-b wrapper-md">

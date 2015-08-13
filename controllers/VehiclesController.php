@@ -403,7 +403,14 @@ class VehiclesController extends Controller
 
             // Vehicle Shipping
             $vehicleShipping = $vehicleDetails->vehicleShippings;
+
+            // Vehicle Events
+            $events = $vehicleDetails->vehicleShippings[0]->event0;
+
             $vehicleShipping = isset($vehicleShipping['0']) ? $vehicleShipping['0'] : '';
+
+
+
 
             // Vehicle plates asssigneds
             $vehiclePlateAssigneds = $vehicleDetails->vehiclePlateAssigneds;
@@ -415,6 +422,7 @@ class VehiclesController extends Controller
 
             // Assign data
             $response['vehicle']['inventory'] = $vehicleDetails ? $vehicleDetails->toArray() : [];
+            $response['vehicle']['events'] = $events ? $events->toArray() : [];
             $response['vehicle']['history'] = $vehicleHistory ? $vehicleHistory->toArray() : [];
             $response['vehicle']['shipping'] = $vehicleShipping ? $vehicleShipping->toArray() : [];
             $response['vehicle']['plateAssigneds'] = $vehiclePlateAssigneds ? $vehiclePlateAssigneds->toArray() : [];
@@ -937,6 +945,10 @@ class VehiclesController extends Controller
                 $vehicleAppointment->transport_type = $modelData['transport_type'];
                 $vehicleAppointment->prep_level = $modelData['prep_level'];
                 $vehicleAppointment->fuel_level = $modelData['fuel_level'];
+                $vehicleAppointment->requested_date = $modelData['requested_date'];
+                $vehicleAppointment->requested_time = $modelData['requested_time'];
+                $vehicleAppointment->delivery_time = $modelData['delivery_time'];
+                $vehicleAppointment->pick_up_time = $modelData['pick_up_time'];
                 // Save records
                 $vehicleAppointment->save(false);
             }
@@ -1185,10 +1197,8 @@ class VehiclesController extends Controller
            $eventDetails = $events->findOne(['id' => $eventId]);
            if($eventDetails) {
                $response['status'] = '1';
-               $response['Events']['location'] = $eventDetails->location;
-               $response['Events']['organized_by'] = $eventDetails->organized_by;
-               $response['Events']['start_date'] = $eventDetails->start_date;
-               $response['Events']['end_date'] = $eventDetails->end_date;
+
+               $response['Events'] = isset($eventDetails) ? $eventDetails->toArray() : [];
            }
        }
 
