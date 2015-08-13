@@ -264,6 +264,7 @@ class VehiclesController extends Controller
         $vehicleHistory = new VehicleHistory();
         $vehiclePlating = new VehiclePlateAssigned();
         $vehicleShipping = new VehicleShipping();
+        $events = new Events();
 
 
         // Load post data to VehicleInventory Model
@@ -335,7 +336,8 @@ class VehiclesController extends Controller
                 'vehicleInventory' => $vehicleInventory,
                 'vehicleHistory' => $vehicleHistory,
                 'vehiclePlating' => $vehiclePlating,
-                'vehicleShipping' => $vehicleShipping
+                'vehicleShipping' => $vehicleShipping,
+                'events'     => $events
             ]);
         }
     }
@@ -1164,5 +1166,33 @@ class VehiclesController extends Controller
             'events' => $events,
             'pagination' => $pagination,
         ]);
+    }
+    public function actionGetEventDetailsById(){
+
+        $response = array(
+            'status' => 0,
+            'message'=> 'Can not find this event details',
+        );
+
+        // Create object
+        $events = new Events();
+
+       if(Yii::$app->request->post()) {
+           // Get vin number
+           $eventId = Yii::$app->request->post('eventId');
+
+           // Get record by id number
+           $eventDetails = $events->findOne(['id' => $eventId]);
+           if($eventDetails) {
+               $response['status'] = '1';
+               $response['Events']['location'] = $eventDetails->location;
+               $response['Events']['organized_by'] = $eventDetails->organized_by;
+               $response['Events']['start_date'] = $eventDetails->start_date;
+               $response['Events']['end_date'] = $eventDetails->end_date;
+           }
+       }
+
+    echo json_encode($response);
+    die;
     }
 }

@@ -98,6 +98,7 @@ use app\models\Events;
         <?= $form->field($vehiclePlating, 'unassigned_by')->dropDownList(ArrayHelper::map(PersonalDetails::find()->all(), 'userId', 'fullname'), ['prompt' => '--Choose User--']); ?>
         <?= $form->field($vehiclePlating, 'plate_number')->dropDownList(ArrayHelper::map(VehiclePlateNumber::find()->all(), 'id', 'plate_number'), ['prompt' => '--Choose Plate--']); ?>
         <?= $form->field($vehiclePlating, 'plate_status')->dropDownList(ArrayHelper::map(VehiclePlatingStatus::find()->all(), 'id', 'plate_status'), ['prompt' => '--Update Status--']); ?>
+
     </div>
 </fieldset>
 
@@ -119,9 +120,13 @@ use app\models\Events;
         <?= $form->field($vehicleShipping, 'vdate')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd']); ?>
         <?= $form->field($vehicleShipping, 'who')->dropDownList(ArrayHelper::map(PersonalDetails::find()->all(), 'userId', 'fullname'), ['prompt' => '--Choose User--']); ?>
         <?= $form->field($vehicleShipping, 'scheduled_date')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd']); ?>
-        <?= $form->field($vehicleShipping, 'scheduled_time') ?>
+
         <?= $form->field($vehicleShipping, 'vehicle_plate')->dropDownList(ArrayHelper::map(VehiclePlateNumber::find()->all(), 'id', 'plate_number'), ['prompt' => '--Choose Plate--']); ?>
-        <?= $form->field($vehicleShipping, 'event')->dropDownList(ArrayHelper::map(Events::find()->all(), 'id', 'event_name'), ['prompt' => '--Choose Event--']); ?>
+        <?= $form->field($vehicleShipping, 'event')->dropDownList(ArrayHelper::map(Events::find()->all(), 'id', 'event_name'), ['prompt' => '--Choose Event--', 'class' => 'eventDropDownInVehiclesInfo']); ?>
+        <?= $form->field($events, 'organized_by') ?>
+        <?= $form->field($events, 'location') ?>
+        <?= $form->field($events, 'start_date')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd']); ?>
+        <?= $form->field($events, 'end_date')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd']); ?>
 
         <?= $form->field($vehicleShipping, 'comments')->textArea(); ?>
 

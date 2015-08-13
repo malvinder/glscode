@@ -87,3 +87,61 @@ function getVehicleDetails(vinNo) {
         }
     });
 }
+
+$(document).on('change','.eventDropDownInVehiclesInfo', function(){
+
+    var eventId = $(this).val().trim();
+    $.ajax({
+        url: baseUrl + '/index.php/vehicles/get-event-details-by-id',
+        type: 'POST',
+        data: {
+            eventId: eventId
+        },
+        dataType: 'JSON',
+        beforeSend: function () {
+
+        },
+        success: function (response) {
+            response = $.parseJSON(JSON.stringify(response));
+
+            if (response.status == '1') {
+                // Vehicle Inventory
+                var vehicleInventory = response.vehicle.inventory;
+
+                $.each(vehicleInventory, function (index, value) {
+                    $(':input[name="VehicleInventory[' + index + ']"]').val(value);
+                });
+
+                // Vehicle History
+                var vehicleHistory = response.vehicle.history;
+
+                $.each(vehicleHistory, function (index, value) {
+                    $(':input[name="VehicleHistory[' + index + ']"]').val(value);
+                });
+
+
+                // Vehicle shipping
+                var vehicleShipping = response.vehicle.shipping;
+
+                $.each(vehicleShipping, function (index, value) {
+                    $(':input[name="VehicleShipping[' + index + ']"]').val(value);
+                });
+
+
+                // Vehicle plating
+                var vehiclePlateAssigneds = response.vehicle.plateAssigneds;
+
+                $.each(vehiclePlateAssigneds, function (index, value) {
+                    $(':input[name="VehiclePlateAssigned[' + index + ']"]').val(value);
+                });
+            }
+            else {
+                alert(response.message);
+                $('.vehiclesInventoryForm')[0].reset();
+                $('.vinNumber').focus();
+
+
+            }
+        }
+    });
+});
