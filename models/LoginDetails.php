@@ -13,11 +13,15 @@ use Yii;
  * @property integer $status
  * @property integer $user_type
  *
+ * @property Events[] $events
+ * @property Events[] $events0
  * @property UserTypes $userType
  * @property PersonalDetails[] $personalDetails
  * @property UserLoginLog[] $userLoginLogs
  * @property VehicleHistory[] $vehicleHistories
  * @property VehicleInventory[] $vehicleInventories
+ * @property VehiclePlateAssigned[] $vehiclePlateAssigneds
+ * @property VehiclePlateAssigned[] $vehiclePlateAssigneds0
  */
 class LoginDetails extends \yii\db\ActiveRecord
 {
@@ -35,7 +39,7 @@ class LoginDetails extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'password', 'status', 'user_type'], 'required'],
+            [['username', 'password', 'user_type'], 'required'],
             [['status', 'user_type'], 'integer'],
             [['username'], 'string', 'max' => 50],
             [['password'], 'string', 'max' => 128],
@@ -52,13 +56,25 @@ class LoginDetails extends \yii\db\ActiveRecord
             'id' => 'ID',
             'username' => 'Username',
             'password' => 'Password',
-            'status' => '0: active
-1: inactive
-2: authorized
-3: blocked
-4: password',
+            'status' => '0: active1: inactive2: authorized3: blocked4: password',
             'user_type' => 'User Type',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEvents()
+    {
+        return $this->hasMany(Events::className(), ['coordinator' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEvents0()
+    {
+        return $this->hasMany(Events::className(), ['evr_coordinator' => 'id']);
     }
 
     /**
@@ -99,5 +115,21 @@ class LoginDetails extends \yii\db\ActiveRecord
     public function getVehicleInventories()
     {
         return $this->hasMany(VehicleInventory::className(), ['coordinator' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVehiclePlateAssigneds()
+    {
+        return $this->hasMany(VehiclePlateAssigned::className(), ['assigned_by' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVehiclePlateAssigneds0()
+    {
+        return $this->hasMany(VehiclePlateAssigned::className(), ['unassigned_by' => 'id']);
     }
 }

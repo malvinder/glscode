@@ -43,8 +43,7 @@ AppAsset::register($this);
         </button>
         <!-- brand -->
         <a href="#/" class="navbar-brand text-lt">
-
-          <img src="gls/web/img/logo.png" alt="." class="hide">
+          <img src="<?php echo yii::$app->request->baseUrl; ?>/img/logo.jpg" alt="." class="image-responsive">
           <span class="hidden-folded m-l-xs">GLS</span>
         </a>
         <!-- / brand -->
@@ -108,7 +107,7 @@ AppAsset::register($this);
                   <a href>Settings</a>
                 </li>
                 <li>
-                  <a href="page_profile.html">Profile</a>
+                  <a href="#">Profile</a>
                 </li>
                 <li>
                   <a href>
@@ -118,7 +117,7 @@ AppAsset::register($this);
                 </li>
                 <li class="divider"></li>
                 <li>
-                  <a href="page_signin.html">Logout</a>
+                  <a href="#">Logout</a>
                 </li>
               </ul>
               <!-- / dropdown -->
@@ -156,6 +155,27 @@ AppAsset::register($this);
                 <span>Components</span>
               </li>
               <li>
+                <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicle/save" >      
+                  <span class="pull-right text-muted">
+            
+                  </span>
+                  <i class="glyphicon glyphicon-th"></i>
+                  <span>Vehicles Receiving</span>
+                </a>
+              </li>
+              <li>
+                <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/events" >      
+                  <span class="pull-right text-muted">
+            
+                  </span>
+                  <i class="glyphicon glyphicon-th"></i>
+                  <span>Event Management</span>
+                </a>
+              </li>
+               <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                <span>Vehicle Management</span>
+              </li>
+              <li>
                 <a href class="auto">      
                   <span class="pull-right text-muted">
                     <i class="fa fa-fw fa-angle-right text"></i>
@@ -171,12 +191,12 @@ AppAsset::register($this);
                     </a>
                   </li>
                     <li>
-                        <a href="<?php echo yii::$app->request->baseUrl; ?>/vehicles/types">
+                        <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/types">
                             <span>Listing</span>
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo yii::$app->request->baseUrl; ?>/vehicles/type/add">
+                        <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/type/add">
                             <span>Add New</span>
                         </a>
                     </li>
@@ -199,7 +219,7 @@ AppAsset::register($this);
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo yii::$app->request->baseUrl; ?>/vehicle/save">
+                            <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicle/save">
                                 <span>Add New</span>
                             </a>
                         </li>
@@ -223,17 +243,21 @@ AppAsset::register($this);
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo yii::$app->request->baseUrl; ?>/vehicles/status">
+                            <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/status">
                                 <span>Listing</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo yii::$app->request->baseUrl; ?>/vehicles/status/add">
+                            <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/status/add">
                                 <span>Add New</span>
                             </a>
                         </li>
                     </ul>
                 </li>
+
+                 <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                <span>Plate Management</span>
+              </li>
 
                 <li>
                     <a href class="auto">
@@ -251,12 +275,12 @@ AppAsset::register($this);
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo yii::$app->request->baseUrl; ?>/vehicles/plates/numbers">
+                            <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/plates/numbers">
                                 <span>Listing</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?php echo yii::$app->request->baseUrl; ?>/vehicles/plates/number/add">
+                            <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/plates/number/add">
                                 <span>Add New</span>
                             </a>
                         </li>
@@ -278,12 +302,12 @@ AppAsset::register($this);
                           </a>
                       </li>
                       <li>
-                          <a href="<?php echo yii::$app->request->baseUrl; ?>/vehicles/plates/types">
+                          <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/plates/types">
                               <span>Listing</span>
                           </a>
                       </li>
                       <li>
-                          <a href="<?php echo yii::$app->request->baseUrl; ?>/vehicles/plates/type/add">
+                          <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/plates/type/add">
                               <span>Add New</span>
                           </a>
                       </li>
@@ -306,17 +330,18 @@ AppAsset::register($this);
                           </a>
                       </li>
                       <li>
-                          <a href="<?php echo yii::$app->request->baseUrl; ?>/vehicles/plates/statuses">
+                          <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/plates/statuses">
                               <span>Listing</span>
                           </a>
                       </li>
                       <li>
-                          <a href="<?php echo yii::$app->request->baseUrl; ?>/vehicles/plates/status/add">
+                          <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/plates/status/add">
                               <span>Add New</span>
                           </a>
                       </li>
                   </ul>
               </li>
+
 
               <li>
                   <a href class="auto">
@@ -334,19 +359,45 @@ AppAsset::register($this);
                           </a>
                       </li>
                       <li>
-                          <a href="<?php echo yii::$app->request->baseUrl; ?>/vehicles/events">
+                          <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/events">
                               <span>Listing</span>
                           </a>
                       </li>
                       <li>
-                          <a href="<?php echo yii::$app->request->baseUrl; ?>/vehicles/event/add">
+                          <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/event/add">
                               <span>Add New</span>
                           </a>
                       </li>
                   </ul>
               </li>
 
-
+              <li>
+                  <a href class="auto">
+                  <span class="pull-right text-muted">
+                    <i class="fa fa-fw fa-angle-right text"></i>
+                    <i class="fa fa-fw fa-angle-down text-active"></i>
+                  </span>
+                      <i class="glyphicon glyphicon-th"></i>
+                      <span>Appointment</span>
+                  </a>
+                  <ul class="nav nav-sub dk">
+                      <li class="nav-sub-header">
+                          <a href>
+                              <span>Vehicles Appointment</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/appointments">
+                              <span>Listing</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/appointment/make">
+                              <span>Add New</span>
+                          </a>
+                      </li>
+                  </ul>
+              </li>
 
 
               <li class="line dk hidden-folded"></li>

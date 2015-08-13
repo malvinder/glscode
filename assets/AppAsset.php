@@ -22,7 +22,7 @@ class AppAsset extends AssetBundle
 		'css/font.css',
 		'assets/animate.css/animate.css',
 		'assets/font-awesome/css/font-awesome.min.css',
-		'simple-line-icons/css/simple-line-icons.css',
+		'assets/simple-line-icons/css/simple-line-icons.css',
     ];
     public $js = [
 	'js/ui-load.js',
@@ -31,6 +31,7 @@ class AppAsset extends AssetBundle
 	'js/ui-nav.js',
 	'js/ui-toggle.js',
 	'js/ui-client.js',
+
     ];
     public $depends = [
         'yii\web\YiiAsset',

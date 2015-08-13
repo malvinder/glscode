@@ -1,7 +1,10 @@
 <?php
 namespace app\controllers;
 
-
+use app\models\LoginDetails;
+use app\models\PersonalDetails;
+use app\models\VehicleAppointments;
+use app\models\VehicleInventoryForm;
 use yii;
 use yii\web\Controller;
 use yii\data\Pagination;
@@ -17,6 +20,7 @@ use app\models\VehiclePlateNumber;
 use app\models\VehiclePlatingStatus;
 use app\models\VehiclePlatingType;
 use app\models\Events;
+use app\models\VehiclesAppointmentForm;
 
 /**
  * Class VehiclesController
@@ -51,22 +55,13 @@ class VehiclesController extends Controller
         // Fetch all records from vehicles_type table
         $query = VehiclesType::find();
 
-        // Pagination
-        $pagination = new Pagination([
-            'defaultPageSize' => 5,
-            'totalCount' => $query->count(),
-        ]);
 
         // Vehicles type table results order by and pagination
-        $vehiclesType = $query->orderBy('id')
-            ->offset($pagination->offset)
-            ->limit($pagination->limit)
-            ->all();
+        $vehiclesType = $query->orderBy('id')->all();
 
         // Render to vehicles-types view
         return $this->render('vehicles-types', [
             'vehiclesType' => $vehiclesType,
-            'pagination' => $pagination,
         ]);
     }
 
@@ -161,22 +156,12 @@ class VehiclesController extends Controller
         // Query for all records
         $query = VehicleStatus::find();
 
-        // Pagination
-        $pagination = new Pagination([
-            'defaultPageSize' => 5,
-            'totalCount' => $query->count(),
-        ]);
-
         // Order by
-        $vehiclesStatus = $query->orderBy('id')
-            ->offset($pagination->offset)
-            ->limit($pagination->limit)
-            ->all();
+        $vehiclesStatus = $query->orderBy('id')->all();
 
         // Render to view
         return $this->render('vehicles-status', [
             'vehiclesStatus' => $vehiclesStatus,
-            'pagination' => $pagination,
         ]);
     }
 
@@ -337,7 +322,7 @@ class VehiclesController extends Controller
                     $vehicleShipping->save(false);
                 }
                 // Redirect to vehicle-display
-                $this->redirect(array('vehicles/vehicle-display', 'vehicleId' => $id));
+                $this->redirect(array('/index.php/vehicles/vehicle-display', 'vehicleId' => $id));
             } else {
 
                 // Get error
@@ -395,7 +380,7 @@ class VehiclesController extends Controller
         // Set default response
         $response = [
             'status' => '0',
-            'message'=> 'Can not find any Vehicle'
+            'message' => 'Can not find any Vehicle'
         ];
 
         // Load Models
@@ -439,11 +424,73 @@ class VehiclesController extends Controller
     }
 
     /**
+     * Get Vehicle For Appointment
+     */
+    public function actionGetVehicleForAppointment()
+    {
+        // Set default response
+        $response = [
+            'status' => '0',
+            'message' => 'Can not find any Vehicle'
+        ];
+
+        // Load Models
+        $vehicleInventory = new VehicleInventory();
+
+        // Get vin number
+        $vinNo = Yii::$app->request->post('vinNo');
+
+        $vehiclesAppointmentForm = array();
+        // Get record by vin number
+        $vehicleDetails = $vehicleInventory->findOne(['id' => $vinNo]);
+
+        // Check vehicleDetails has record or not
+        if ($vehicleDetails) {
+
+            $vehiclesAppointmentForm['vin'] = $vehicleDetails->vin;
+            $vehiclesAppointmentForm['vehicle_id'] = $vehicleDetails->id;
+
+            // Vehicle History
+            $vehicleHistory = $vehicleDetails->vehicleHistories;
+            $vehicleHistory = isset($vehicleHistory['0']) ? $vehicleHistory['0'] : '';
+
+            $vehiclesAppointmentForm['released_mileage'] = $vehicleHistory->released_mileage;
+            /*$vehiclesAppointmentForm['released_date'] = $vehicleHistory->released_date;
+            $vehiclesAppointmentForm['received_date'] = $vehicleHistory->received_date;*/
+
+
+            // Vehicle Shipping
+            $vehicleShipping = $vehicleDetails->vehicleShippings;
+            $vehicleShipping = isset($vehicleShipping['0']) ? $vehicleShipping['0'] : '';
+
+            $vehiclesAppointmentForm['scheduled_date'] = $vehicleShipping->scheduled_date;
+            $vehiclesAppointmentForm['vehicle_returned'] = $vehicleShipping->vehicle_returned;
+            $vehiclesAppointmentForm['vdate'] = $vehicleShipping->vdate;
+
+
+            // Vehicle plates asssigneds
+            $vehiclesAppointmentForm['plate_number'] = $vehicleDetails->vehiclePlateAssigneds[0]->plateNumber->plate_number;
+
+            // Assign success status
+            $response['status'] = '1';
+
+
+            // Assign data
+            $response['vehiclesAppointmentForm'] = $vehiclesAppointmentForm;
+        }
+
+        // Return response to ajax
+        echo json_encode($response);
+        die;
+    }
+
+    /**
      * Vehicle Plate Numbers
      *      Its show listing of plate numbers
      * @return string
      */
-    public function actionVehiclePlateNumbers(){
+    public function actionVehiclePlateNumbers()
+    {
 
         // Set title
         $this->view->title = 'Plate Numbers';
@@ -454,23 +501,12 @@ class VehiclesController extends Controller
         // Fetch all records from vehicles_type table
         $query = $vehiclePlateNumbers->find();
 
-        // Pagination
-        $pagination = new Pagination([
-            'defaultPageSize' => 5,
-            'totalCount' => $query->count(),
-        ]);
-
         // Vehicles plating numbers table results order by and pagination
-        $vehiclesPlateNumbers = $query->orderBy('id')
-            ->offset($pagination->offset)
-            ->limit($pagination->limit)
-            ->all();
-
+        $vehiclesPlateNumbers = $query->orderBy('id')->all();
 
         // Render to vehicles-plate-numbers view
         return $this->render('vehicles-plate-numbers', [
             'vehiclesPlateNumbers' => $vehiclesPlateNumbers,
-            'pagination' => $pagination,
         ]);
     }
 
@@ -511,7 +547,7 @@ class VehiclesController extends Controller
             $vehiclePlatingType = $vehiclePlatingType->find()->all();
 
             // Render to view
-            return $this->render('add-vehicles-plate-number-form', ['vehiclePlateNumberForm' => $vehiclePlateNumberForm , 'vehiclePlatingStatus'=> $vehiclePlatingStatus , 'vehiclePlatingType' => $vehiclePlatingType]);
+            return $this->render('add-vehicles-plate-number-form', ['vehiclePlateNumberForm' => $vehiclePlateNumberForm, 'vehiclePlatingStatus' => $vehiclePlatingStatus, 'vehiclePlatingType' => $vehiclePlatingType]);
         }
     }
 
@@ -521,7 +557,8 @@ class VehiclesController extends Controller
      * @param $id
      * @return string
      */
-    public function actionEditVehiclePlateNumber($id = NULL) {
+    public function actionEditVehiclePlateNumber($id = NULL)
+    {
 
         // Set title
         $this->view->title = 'Edit Vehicle Plate Number';
@@ -583,23 +620,13 @@ class VehiclesController extends Controller
         // Fetch all records from vehicles_type table
         $query = $vehiclePlatingTypes->find();
 
-        // Pagination
-        $pagination = new Pagination([
-            'defaultPageSize' => 5,
-            'totalCount' => $query->count(),
-        ]);
-
         // Vehicles plating type table results order by and pagination
-        $vehiclePlatingTypes = $query->orderBy('id')
-            ->offset($pagination->offset)
-            ->limit($pagination->limit)
-            ->all();
+        $vehiclePlatingTypes = $query->orderBy('id')->all();
 
 
         // Render to vehicles plating types view
         return $this->render('vehicles-plating-types', [
             'vehiclePlatingTypes' => $vehiclePlatingTypes,
-            'pagination' => $pagination,
         ]);
     }
 
@@ -648,7 +675,7 @@ class VehiclesController extends Controller
         // Check has post set and data validate
         if ($vehiclePlatingType->load(Yii::$app->request->post()) && $vehiclePlatingType->validate()) {
 
-            $vehiclePlatingType->setOldAttributes(['id'=> $vehiclePlatingType->id]);
+            $vehiclePlatingType->setOldAttributes(['id' => $vehiclePlatingType->id]);
             // Save records
             $vehiclePlatingType->save();
 
@@ -656,8 +683,8 @@ class VehiclesController extends Controller
             $this->redirect(array('vehicles/plates/types'));
 
         } else {
-            if(!$id){
-               // If id null than go for add
+            if (!$id) {
+                // If id null than go for add
                 return $this->render('add-vehicle-plating-type-form', ['vehiclePlatingType' => $vehiclePlatingType]);
             }
 
@@ -685,23 +712,13 @@ class VehiclesController extends Controller
         // Fetch all records
         $query = $vehiclePlatingStatus->find();
 
-        // Pagination
-        $pagination = new Pagination([
-            'defaultPageSize' => 5,
-            'totalCount' => $query->count(),
-        ]);
 
         // Vehicles plating status table results order by and pagination
-        $vehiclePlatingStatus = $query->orderBy('id')
-            ->offset($pagination->offset)
-            ->limit($pagination->limit)
-            ->all();
-
+        $vehiclePlatingStatus = $query->orderBy('id')->all();
 
         // Render to view
         return $this->render('vehicles-plating-status', [
             'vehiclePlatingStatus' => $vehiclePlatingStatus,
-            'pagination' => $pagination,
         ]);
     }
 
@@ -787,23 +804,12 @@ class VehiclesController extends Controller
         // Fetch all records
         $query = $events->find();
 
-        // Pagination
-        $pagination = new Pagination([
-            'defaultPageSize' => 5,
-            'totalCount' => $query->count(),
-        ]);
-
         // Events table results order by and pagination
-        $events = $query->orderBy('id')
-            ->offset($pagination->offset)
-            ->limit($pagination->limit)
-            ->all();
-
+        $events = $query->orderBy('id')->all();
 
         // Render to view
         return $this->render('events-listing', [
             'events' => $events,
-            'pagination' => $pagination,
         ]);
     }
 
@@ -827,12 +833,16 @@ class VehiclesController extends Controller
             $events->save();
 
             // Redirect after successfully save to listing page
-            $this->redirect(array('vehicles/events'));
+            $this->redirect(array('/index.php/vehicles/events'));
 
         } else {
 
+            $personalDetails = new PersonalDetails();
+
+            $coordinator = $personalDetails->find()->all();
+
             // If post is not set than render for add form
-            return $this->render('add-event', ['events' => $events]);
+            return $this->render('add-event', ['events' => $events, 'coordinator' => $coordinator]);
         }
     }
 
@@ -868,8 +878,291 @@ class VehiclesController extends Controller
             // Get the particular record
             $event = $event->findOne($id);
 
+            $personalDetails = new PersonalDetails();
+
+            $coordinator = $personalDetails->find()->all();
+
             // If post is not set than render for edit form
-            return $this->render('edit-event', ['event' => $event]);
+            return $this->render('edit-event', ['events' => $event, 'coordinator' => $coordinator]);
         }
+    }
+
+
+    /**
+     * view event
+     *     This function view event
+     * @return string
+     */
+    public function actionViewEvent($id = NULL)
+    {
+        // Set title
+        $this->view->title = 'View Event';
+        // Which should show on view page
+        $tab = 1;
+
+        // Define object for events
+        $event = new Events();
+
+        if (!$id) {
+            // If id is null than go for add
+            return $this->render('add-event', ['event' => $event]);
+        }
+
+        // Get the particular record
+        $event = $event->findOne($id);
+
+        $personalDetails = new PersonalDetails();
+
+        $coordinator = $personalDetails->find()->all();
+
+        $vehicleAppointments = new VehicleAppointments();
+
+        // Create appointment form here
+        $model = new VehiclesAppointmentForm();
+
+        // Check has post set and data validate
+        if (Yii::$app->request->post()) {
+
+            $modelPostData = Yii::$app->request->post();
+
+            foreach ($modelPostData['VehiclesAppointmentForm'] as $modelData) {
+                $vehicleAppointment = new VehicleAppointments();
+                $vehicleAppointment->event_id = $modelData['event_id'];
+                $vehicleAppointment->vehicle_id = $modelData['vehicle_id'];
+                $vehicleAppointment->pick_up_date = date('Y-m-d', strtotime($modelData['pick_up_date']));
+                $vehicleAppointment->delivery_date = date('Y-m-d', strtotime($modelData['delivery_date']));
+                $vehicleAppointment->material_required = $modelData['material_required'];
+                $vehicleAppointment->transport_type = $modelData['transport_type'];
+                $vehicleAppointment->prep_level = $modelData['prep_level'];
+                $vehicleAppointment->fuel_level = $modelData['fuel_level'];
+                // Save records
+                $vehicleAppointment->save(false);
+            }
+
+            $tab = 3;
+        }
+
+        // Before form loaded set the fields values
+        $model->event_id = $event->id;
+        $model->contact_name = $event->contact_name;
+        $model->coordinator = $event->coordinator0->personalDetails[0]->fullname;
+
+
+        // Create object
+        $vehicleInventory = new VehicleInventory();
+        $allVinNumber = $vehicleInventory->find()->all();
+
+
+        // Fetch all records
+        $vehicleAppointments = $vehicleAppointments->find()->all();
+
+        // If post is not set than render for edit form
+        return $this->render('view-event', ['event' => $event, 'coordinator' => $coordinator, 'allVinNumber' => $allVinNumber, 'model' => $model, 'vehicleAppointments' => $vehicleAppointments, 'tab' => $tab]);
+
+    }
+
+    public function actionVehcilesAppointments()
+    {
+
+        // Set title
+        $this->view->title = 'Vehciles Appointments';
+
+        // Create object
+        $vehicleAppointments = new VehicleAppointments();
+
+        // Fetch all records
+        $query = $vehicleAppointments->find();
+
+        // Pagination
+        $pagination = new Pagination([
+            'defaultPageSize' => 5,
+            'totalCount' => $query->count(),
+        ]);
+
+        // Events table results order by and pagination
+        $vehicleAppointments = $query
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        // Render to view
+        return $this->render('vehicles-appointments', [
+            'vehicleAppointments' => $vehicleAppointments,
+            'pagination' => $pagination,
+        ]);
+    }
+
+    public function actionAddVehcilesAppointments_old()
+    {
+
+        // Set title
+        $this->view->title = 'Make Vehciles Appointments';
+
+        // Create object
+        $vehicleAppointments = new VehicleAppointments();
+
+        // Create appointment form here
+        $model = new VehiclesAppointmentForm();
+
+        // Check has post set and data validate
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            pr($model);
+            die;
+            // Save records
+            $vehicleAppointments->save();
+
+            // Redirect after successfully save to listing page
+            $this->redirect(array('/index.php/vehicles/appointments'));
+
+        } else {
+
+            // Create object
+            $vehicleInventory = new VehicleInventory();
+            $allVinNumber = $vehicleInventory->find()->all();
+
+
+            // If post is not set than render for add form
+            return $this->render('add-vehicle-appointments', ['allVinNumber' => $allVinNumber, 'model' => $model]);
+        }
+    }
+
+    public function actionAddVehcilesAppointments($id)
+    {
+        // Set title
+        $this->view->title = 'Make Vehciles Appointments';
+
+        // Create object
+        $vehicleAppointments = new VehicleAppointments();
+
+        // Create appointment form here
+        $model = new VehiclesAppointmentForm();
+
+        // Check has post set and data validate
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+            // Save records
+            $vehicleAppointments->event_id = $model->event_id;
+            $vehicleAppointments->vehicle_id = $model->vehicle_id;
+            $vehicleAppointments->save();
+
+            // Redirect after successfully save to listing page
+            $this->redirect(array('/index.php/vehicles/appointments'));
+
+        } else {
+
+            // Create object
+            $event = new Events();
+
+            $event = $event->findOne($id);
+            $model->event_id = $event->id;
+            $model->contact_name = $event->contact_name;
+            $model->coordinator = $event->coordinator0->personalDetails[0]->fullname;
+
+
+            // Create object
+            $vehicleInventory = new VehicleInventory();
+            $allVinNumber = $vehicleInventory->find()->all();
+
+
+            // If post is not set than render for add form
+            return $this->render('add-vehicle-appointments', ['allVinNumber' => $allVinNumber, 'model' => $model]);
+        }
+    }
+
+    public function getAppointmentDetailsByVin()
+    {
+
+        // Create object
+        $events = new Events();
+
+        // Create object
+        $vehicleInventory = new VehicleInventory();
+
+        // Create object
+        $vehicleShipping = new VehicleShipping();
+
+        $vehicleHistory = new VehicleHistory();
+
+        $vehiclePlateNnumber = new VehiclePlateNumber();
+    }
+
+    public function actionEditVehcilesAppointments($id)
+    {
+        // Set title
+        $this->view->title = 'Edit Vehciles Appointments';
+
+        // Define object for events
+        $vehicleAppointments = new VehicleAppointments();
+
+        // Check has post set and data validate
+        if ($vehicleAppointments->load(Yii::$app->request->post()) && $vehicleAppointments->validate()) {
+
+            $vehicleAppointments->setOldAttributes(['appointment_id' => $vehicleAppointments->appointment_id]);
+
+            // Save records
+            $vehicleAppointments->save();
+
+            // Redirect after successfully save to listing page
+            $this->redirect(array('/index.php/vehicles/appointments'));
+
+        } else {
+            $events = new Events();
+
+            $events = $events->find()->all();
+
+            $vehicleInventory = new VehicleInventory();
+
+            $vehicleInventory = $vehicleInventory->find()->all();
+
+            if (!$id) {
+                // If id is null than go for add
+                // If post is not set than render for add form
+                return $this->render('add-vehicle-appointments', ['vehicleAppointments' => $vehicleAppointments, 'events' => $events, 'vehicleInventory' => $vehicleInventory]);
+            }
+
+            // Get the particular record
+            $vehicleAppointments = $vehicleAppointments->findOne($id);
+
+
+            // If post is not set than render for edit form
+            return $this->render('edit-vehicle-appointments', ['vehicleAppointments' => $vehicleAppointments, 'events' => $events, 'vehicleInventory' => $vehicleInventory]);
+        }
+    }
+
+
+    /**
+     * Events
+     *      Listing of Events
+     * @return string
+     */
+    public function actionVehiclesInEvents()
+    {
+        // Set title
+        $this->view->title = 'Events';
+
+        // Create object
+        $events = new Events();
+
+        // Fetch all records
+        $query = $events->find();
+
+        // Pagination
+        $pagination = new Pagination([
+            'defaultPageSize' => 5,
+            'totalCount' => $query->count(),
+        ]);
+
+        // Events table results order by and pagination
+        $events = $query->orderBy('id')
+            ->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+
+        // Render to view
+        return $this->render('vehicles-in-events', [
+            'events' => $events,
+            'pagination' => $pagination,
+        ]);
     }
 }

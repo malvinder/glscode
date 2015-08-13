@@ -9,6 +9,7 @@ use app\models\VehiclesType;
 use yii\jui\DatePicker;
 use app\models\VehiclePlateNumber;
 use app\models\VehiclePlatingStatus;
+use app\models\VehicleAppointments;
 use app\models\Events;
 
 ?>
@@ -20,7 +21,7 @@ use app\models\Events;
   <div class="row">
   <div class="col-sm-6">
       <div class="panel panel-default">
-        <div class="panel-heading font-bold">Add Vehicle Plate Number</div>
+        <div class="panel-heading font-bold">Vehicles Receiving Form</div>
         <div class="panel-body">
 
 <!-- Form start -->
@@ -30,9 +31,9 @@ use app\models\Events;
         ]
     ]);?>
 
-<!-------------------------------------- Vehicles Receiving Form ----------------------------------------------------------->
+<!-- ------------------------------------ Vehicles Receiving Form --------------------------------------------------------- -->
 <fieldset>
-    <legend>Vehicles Receiving Form</legend>
+ 
     <div class="form-group">
         <?= Html::label('Find Vehicle By Vin Number'); ?>
         <?= Html::textInput('vinNumber', NULL, array('class' => 'vinNumber')); ?>
@@ -51,11 +52,20 @@ use app\models\Events;
         <?= $form->field($vehicleInventory, 'restricted'); ?>
     </div>
 </fieldset>
-<!-------------------------------------- End Of Vehicles Receiving Form ----------------------------------------------------->
 
-<!-------------------------------------- Vehicle History Form --------------------------------------------------------------->
+      </div>
+    </div>
+   </div>
+<!-------------------------------------- End Of Vehicles Receiving Form --------------------------------------------------- -->
+
+
+<div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-heading font-bold">Vehicle History</div>
+        <div class="panel-body">
+<!-------------------------------------- Vehicle History Form ------------------------------------------------------------- -->
 <fieldset>
-    <legend>Vehicle History</legend>
+   
     <div class="control-group">
         <?= $form->field($vehicleHistory, 'id')->hiddenInput()->label(false) ?>
         <?= $form->field($vehicleHistory, 'received_date')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd']); ?>
@@ -67,11 +77,19 @@ use app\models\Events;
     </div>
 </fieldset>
 
-<!-----------------------------------End Of Vehicle History Form ------------------------------------------------------------>
+      </div>
+    </div>
+   </div>
+<!----------------------------------- End Of Vehicle History Form ---------------------------------------------------------- -->
 
-<!-------------------------------------- Vehicle Plating Form --------------------------------------------------------------->
+
+<div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-heading font-bold">Vehicle Plating</div>
+        <div class="panel-body">
+<!-------------------------------------- Vehicle Plating Form ------------------------------------------------------------- -->
 <fieldset>
-    <legend>Vehicle Plating</legend>
+   
     <div class="control-group">
         <?= $form->field($vehiclePlating, 'id')->hiddenInput()->label(false) ?>
         <?= $form->field($vehiclePlating, 'date_assigned')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd']); ?>
@@ -83,11 +101,19 @@ use app\models\Events;
     </div>
 </fieldset>
 
-<!-----------------------------------End Of Vehicle Plating Form ------------------------------------------------------------->
+      </div>
+    </div>
+   </div>
+<!-----------------------------------End Of Vehicle Plating Form ----------------------------------------------------------- -->
 
-<!-------------------------------------- Vehicle Shipping Form --------------------------------------------------------------->
+
+<div class="col-sm-6">
+      <div class="panel panel-default">
+        <div class="panel-heading font-bold">Vehicle Shipping</div>
+        <div class="panel-body">
+<!-------------------------------------- Vehicle Shipping Form ------------------------------------------------------------ -->
 <fieldset>
-    <legend>Vehicle Shipping</legend>
+    
     <div class="control-group">
         <?= $form->field($vehicleShipping, 'id')->hiddenInput()->label(false) ?>
         <?= $form->field($vehicleShipping, 'vdate')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd']); ?>
@@ -96,6 +122,7 @@ use app\models\Events;
         <?= $form->field($vehicleShipping, 'scheduled_time') ?>
         <?= $form->field($vehicleShipping, 'vehicle_plate')->dropDownList(ArrayHelper::map(VehiclePlateNumber::find()->all(), 'id', 'plate_number'), ['prompt' => '--Choose Plate--']); ?>
         <?= $form->field($vehicleShipping, 'event')->dropDownList(ArrayHelper::map(Events::find()->all(), 'id', 'event_name'), ['prompt' => '--Choose Event--']); ?>
+
         <?= $form->field($vehicleShipping, 'comments')->textArea(); ?>
 
     </div>

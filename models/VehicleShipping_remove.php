@@ -17,10 +17,8 @@ use Yii;
  * @property integer $event
  * @property integer $vehicle_returned
  * @property string $comments
- * @property string $appointment_id
  *
  * @property Events $event0
- * @property VehicleAppointments $appointment
  * @property VehiclePlateNumber $vehiclePlate
  * @property VehicleInventory $vehicle
  */
@@ -40,8 +38,8 @@ class VehicleShipping extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['vehicleId', 'who', 'vehicle_plate', 'event', 'appointment_id'], 'required'],
-            [['vehicleId', 'who', 'vehicle_plate', 'event', 'vehicle_returned', 'appointment_id'], 'integer'],
+            [['vehicleId', 'who', 'vehicle_plate', 'event'], 'required'],
+            [['vehicleId', 'who', 'vehicle_plate', 'event', 'vehicle_returned'], 'integer'],
             [['vdate', 'scheduled_date', 'scheduled_time','id'], 'safe'],
             [['comments'], 'string']
         ];
@@ -55,15 +53,14 @@ class VehicleShipping extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'vehicleId' => 'Vehicle ID',
-            'vdate' => 'Vdate',
-            'who' => 'Who',
+            'vdate' => 'Shipped Date',
+            'who' => 'Coordinator',
             'scheduled_date' => 'Scheduled Date',
-            'scheduled_time' => 'Scheduled Time',
+            'scheduled_time' => 'Scheduled Time (HH:MM:SS)',
             'vehicle_plate' => 'Vehicle Plate',
             'event' => 'Event',
             'vehicle_returned' => 'Vehicle Returned',
             'comments' => 'Comments',
-
         ];
     }
 
@@ -74,8 +71,6 @@ class VehicleShipping extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Events::className(), ['id' => 'event']);
     }
-
-
 
     /**
      * @return \yii\db\ActiveQuery

@@ -77,6 +77,13 @@ $config = [
                 'vehicles/events'          => 'vehicles/events',
                 'vehicles/event/add'          => 'vehicles/add-event',
                 'vehicles/event/edit/<id:[0-9]+>' => 'vehicles/edit-event',
+                'vehicles/event/view/<id:[0-9]+>' => 'vehicles/view-event',
+
+                // vehicles appointment
+                'vehicles/appointments' => 'vehicles/vehciles-appointments',
+                'vehicles/appointment/make/<id:[0-9]+>' => 'vehicles/add-vehciles-appointments',
+                'vehicles/appointment/edit/<id:[0-9]+>' => 'vehicles/edit-vehciles-appointments',
+
 
             ],
         ],

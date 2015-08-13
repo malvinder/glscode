@@ -3,9 +3,9 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\jui\DatePicker;
+use yii\helpers\ArrayHelper;
 
 ?>
-
 <div id="content" class="app-content" role="main">
     <div class="app-content-body ">
         <div class="wrapper-md" ng-controller="FormDemoCtrl">
@@ -17,23 +17,52 @@ use yii\jui\DatePicker;
 
                             <?php $form = ActiveForm::begin(); ?>
                             <div class="form-group">
-                                <?= $form->field($event, 'id')->hiddenInput()->label(false); ?>
+                                <?= $form->field($events, 'id')->hiddenInput()->label(false); ?>
+                                <?= $form->field($events, 'event_name')->textInput(); ?>
+                            </div>
+                            <div class="form-group">
+                                <?= $form->field($events, 'organized_by')->textInput(); ?>
+                            </div>
+                            <div class="form-group">
+                                <?= $form->field($events, 'start_date')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd']); ?>
+                            </div>
+                            <div class="form-group">
+                                <?= $form->field($events, 'end_date')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd']); ?>
+                            </div>
+                            <div class="form-group">
+                                <?= $form->field($events, 'location')->textInput(); ?>
+                            </div>
+                            <div class="form-group">
+                                <?= $form->field($events, 'address')->textarea(); ?>
+                            </div>
+                            <div class="form-group">
+                                <?= $form->field($events, 'city')->textInput(); ?>
+                            </div>
+                            <div class="form-group">
+                                <?= $form->field($events, 'state')->textInput(); ?>
+                            </div>
+                            <div class="form-group">
+                                <?= $form->field($events, 'account_num')->textInput(); ?>
+                            </div>
+                            <div class="form-group">
+                                <?= $form->field($events, 'short_code')->textInput(); ?>
+                            </div>
+                            <div class="form-group">
+                                <?= $form->field($events, 'contact_name')->textInput(); ?>
+                            </div>
+                            <div class="form-group">
+                                <?= $form->field($events, 'customer_phone')->textInput(); ?>
+                            </div>
 
-                                <?= $form->field($event, 'event_name')->textInput(); ?>
+                            <div class="form-group">
+                                <?= $form->field($events, 'coordinator')->dropDownList(ArrayHelper::map($coordinator, 'userId', 'fullname'), ['prompt' => '--Choose Type--']); ?>
                             </div>
                             <div class="form-group">
-                                <?= $form->field($event, 'organized_by')->textInput(); ?>
+                                <?= $form->field($events, 'evr_coordinator')->dropDownList(ArrayHelper::map($coordinator, 'userId', 'fullname'), ['prompt' => '--Choose Type--']); ?>
                             </div>
                             <div class="form-group">
-                                <?= $form->field($event, 'event_date')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd']); ?>
+                                <?= $form->field($events, 'evr_date')->widget(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yyyy-MM-dd']); ?>
                             </div>
-                            <div class="form-group">
-                                <?= $form->field($event, 'event_time')->input('time'); ?>
-                            </div>
-                            <div class="form-group">
-                                <?= $form->field($event, 'location')->textInput(); ?>
-                            </div>
-
 
                             <div class="form-group">
                                 <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>

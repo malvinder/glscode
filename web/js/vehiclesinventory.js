@@ -24,6 +24,9 @@ $(document).on('click', '.searchByVinNumber', function () {
 });
 
 
+
+
+
 /**
  * Get Vehicle details
  * @param vinNo
