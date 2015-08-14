@@ -1,9 +1,6 @@
 <?php
-use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use yii\helpers\Html;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -43,8 +40,9 @@ AppAsset::register($this);
         </button>
         <!-- brand -->
         <a href="#/" class="navbar-brand text-lt">
-          <img src="<?php echo yii::$app->request->baseUrl; ?>/img/logo.jpg" alt="." class="image-responsive">
-          <span class="hidden-folded m-l-xs">GLS</span>
+            <img src="<?php echo yii::$app->request->baseUrl; ?>/img/logo.png" alt="."
+                 class="image-responsive logo-img">
+
         </a>
         <!-- / brand -->
       </div>
@@ -129,18 +127,8 @@ AppAsset::register($this);
           <!-- nav -->
           <nav ui-nav class="navi clearfix">
             <ul class="nav">
-              <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
-                <span>Navigation</span>
-              </li>
+
               <li>
-                <a href class="auto">      
-                  <span class="pull-right text-muted">
-                    <i class="fa fa-fw fa-angle-right text"></i>
-                    <i class="fa fa-fw fa-angle-down text-active"></i>
-                  </span>
-                  <i class="glyphicon glyphicon-stats icon text-primary-dker"></i>
-                  <span class="font-bold">Dashboard</span>
-                </a>
                 <ul class="nav nav-sub dk">
                   <li class="nav-sub-header">
                     <a href="index/">
@@ -426,7 +414,9 @@ AppAsset::register($this);
   </footer>
   <!-- / footer -->
 
+    <style>
 
+    </style>
 
 </div>
 <?php $this->endBody() ?>

@@ -64,7 +64,7 @@ class Events extends \yii\db\ActiveRecord
                 'required'
             ],
             [['travel_required', 'coordinator', 'evr_coordinator'], 'integer'],
-            [['date_entered', 'start_date', 'end_date', 'evr_date', 'id'], 'safe'],
+            [['date_entered', 'start_date', 'end_date', 'evr_date'], 'safe'],
             [['location', 'address'], 'string'],
             [['job_number', 'revised', 'entered_by'], 'string', 'max' => 255],
             [['event_name'], 'string', 'max' => 75],

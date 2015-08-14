@@ -1,6 +1,5 @@
 <?php
 use yii\helpers\Html;
-use yii\widgets\LinkPager;
 
 ?>
 <div id="content" class="app-content" role="main">
@@ -8,7 +7,11 @@ use yii\widgets\LinkPager;
 
         <div class="bg-light lter b-b wrapper-md">
             <h1 class="m-n font-thin h3">Events List</h1>
-            <button class="btn btn-primary btn-addon btn-lg" style="float: right; margin-top: -35px;"><i class="fa fa-plus"></i>New Event</button>
+            <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/event/add">
+                <button class="btn btn-primary btn-addon btn-lg" style="float: right; margin-top: -35px;"><i
+                        class="fa fa-plus"></i>New Event
+                </button>
+            </a>
         </div>
         <div class="wrapper-md">
             <div class="panel panel-default">

@@ -1,26 +1,24 @@
 <?php
 namespace app\controllers;
 
-use app\models\LoginDetails;
+use app\models\Events;
 use app\models\PersonalDetails;
 use app\models\VehicleAppointments;
-use app\models\VehicleInventoryForm;
-use yii;
-use yii\web\Controller;
-use yii\data\Pagination;
-use app\models\VehiclesType;
-use app\models\VehicleTypeForm;
-use app\models\VehicleStatus;
-use app\models\VehicleStatusForm;
-use app\models\VehicleInventory;
 use app\models\VehicleHistory;
+use app\models\VehicleInventory;
 use app\models\VehiclePlateAssigned;
-use app\models\VehicleShipping;
 use app\models\VehiclePlateNumber;
 use app\models\VehiclePlatingStatus;
 use app\models\VehiclePlatingType;
-use app\models\Events;
 use app\models\VehiclesAppointmentForm;
+use app\models\VehicleShipping;
+use app\models\VehicleStatus;
+use app\models\VehicleStatusForm;
+use app\models\VehiclesType;
+use app\models\VehicleTypeForm;
+use yii;
+use yii\data\Pagination;
+use yii\web\Controller;
 
 /**
  * Class VehiclesController
@@ -949,6 +947,7 @@ class VehiclesController extends Controller
                 $vehicleAppointment->requested_time = $modelData['requested_time'];
                 $vehicleAppointment->delivery_time = $modelData['delivery_time'];
                 $vehicleAppointment->pick_up_time = $modelData['pick_up_time'];
+
                 // Save records
                 $vehicleAppointment->save(false);
             }

@@ -897,8 +897,10 @@ body {
 
 .navbar-brand img {
   display: inline;
-  max-height: 20px;
-  margin-top: -4px;
+    max-height: 100px;
+    max-width: 135px;
+    margin-top: 5px;
+    margin-bottom: 7px;
   vertical-align: middle;
 }
 
@@ -1193,6 +1195,10 @@ html.bg {
 
 .nav-sub-header a {
   padding: 15px 20px;
+}
+
+nav .navi {
+    margin-top: 20px;
 }
 
 .navi ul.nav li {
@@ -5182,4 +5188,13 @@ a.text-#000000:hover {
   99.9% {
     background-color: #7266ba;
   }
+}
+
+.vehiclesInventoryForm label {
+    min-width: 100px;
+    padding-left: 15px;
+}
+
+.padding-left-10 {
+    padding-left: 10px;
 }

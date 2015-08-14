@@ -1,44 +1,51 @@
 <?php
 
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-use yii\helpers\ArrayHelper;
+use app\models\Events;
 use app\models\PersonalDetails;
-use app\models\VehicleStatus;
-use app\models\VehiclesType;
-use yii\jui\DatePicker;
 use app\models\VehiclePlateNumber;
 use app\models\VehiclePlatingStatus;
-use app\models\VehicleAppointments;
-use app\models\Events;
+use app\models\VehicleStatus;
+use app\models\VehiclesType;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 ?>
 
-
   <div id="content" class="app-content" role="main">
-  	<div class="app-content-body ">
+      <div class="app-content-body">
+          <div class="bg-light lter b-b wrapper-md">
+              <h1 class="m-n font-thin h3">Vehicles Receiving</h1>
+          </div>
 <div class="wrapper-md" ng-controller="FormDemoCtrl">
-  <div class="row">
-  <div class="col-sm-6">
+    <!-- Form start -->
+    <?php  $form = ActiveForm::begin(
+        [
+            'options' => [
+                'class' => 'vehiclesInventoryForm form-inline'
+            ]
+        ]);?>
+
+    <div class="row">
+        <div class="panel-heading font-bold">
+            <div class="form-group">
+                <?= Html::label('Find Vehicle By Vin Number'); ?>
+                <?= Html::textInput('vinNumber', null, array('class' => 'vinNumber')); ?>
+                <?= Html::Button('Search', ['class' => 'btn btn-primary searchByVinNumber']); ?>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
       <div class="panel panel-default">
         <div class="panel-heading font-bold">Vehicles Receiving Form</div>
         <div class="panel-body">
 
-<!-- Form start -->
-<?php  $form = ActiveForm::begin(
-    [   'options' => [
-            'class' => 'vehiclesInventoryForm'
-        ]
-    ]);?>
+
 
 <!-- ------------------------------------ Vehicles Receiving Form --------------------------------------------------------- -->
 <fieldset>
  
-    <div class="form-group">
-        <?= Html::label('Find Vehicle By Vin Number'); ?>
-        <?= Html::textInput('vinNumber', NULL, array('class' => 'vinNumber')); ?>
-        <?= Html::Button('Search', ['class' => 'btn btn-primary searchByVinNumber']); ?>
-    </div>
+
     <div class="control-group">
        <?= $form->field($vehicleInventory, 'id')->hiddenInput()->label(false) ?>
         <?= $form->field($vehicleInventory, 'vin'); ?>
@@ -59,7 +66,7 @@ use app\models\Events;
 <!-------------------------------------- End Of Vehicles Receiving Form --------------------------------------------------- -->
 
 
-<div class="col-sm-6">
+        <div class="col-sm-12">
       <div class="panel panel-default">
         <div class="panel-heading font-bold">Vehicle History</div>
         <div class="panel-body">
@@ -83,7 +90,7 @@ use app\models\Events;
 <!----------------------------------- End Of Vehicle History Form ---------------------------------------------------------- -->
 
 
-<div class="col-sm-6">
+        <div class="col-sm-12">
       <div class="panel panel-default">
         <div class="panel-heading font-bold">Vehicle Plating</div>
         <div class="panel-body">
@@ -108,7 +115,7 @@ use app\models\Events;
 <!-----------------------------------End Of Vehicle Plating Form ----------------------------------------------------------- -->
 
 
-<div class="col-sm-6">
+        <div class="col-sm-12">
       <div class="panel panel-default">
         <div class="panel-heading font-bold">Vehicle Shipping</div>
         <div class="panel-body">
@@ -135,7 +142,7 @@ use app\models\Events;
 <!-------------------------------------- End Of Vehicle Shipping Form -------------------------------------------------------->
 
 <!-- Form submit button -->
-<div class="form-group">
+            <div class="form-group pull-right">
     <?= Html::submitButton('Add Vehicle', ['class' => 'btn btn-primary']); ?>
 </div>
 
