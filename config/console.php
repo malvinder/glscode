@@ -11,7 +11,10 @@ return [
     'bootstrap' => ['log', 'gii'],
     'controllerNamespace' => 'app\commands',
     'modules' => [
-        'gii' => 'yii\gii\Module',
+        'user-management' => [
+            'class' => 'webvimark\modules\UserManagement\UserManagementModule',
+        ],
+        'gii' => 'yii\gii\Module'
     ],
     'components' => [
         'cache' => [

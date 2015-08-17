@@ -29,15 +29,37 @@ use yii\web\Controller;
 class VehiclesController extends Controller
 {
 
+
+    public function behaviors()
+    {
+        return [
+            'ghost-access' => [
+                'class' => 'webvimark\modules\UserManagement\components\GhostAccessControl',
+            ],
+        ];
+    }
+
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
+        ];
+    }
+
     /**
      * index
      *    Its default function
      */
     public function actionIndex()
     {
-
         // Render to view
-        $this->render('index');
+        return $this->render('index');
     }
 
     /**
@@ -99,11 +121,13 @@ class VehiclesController extends Controller
 
     /**
      * edit Vehicles type
+     *
      * @param null $id
+     *
      * @return string
      */
 
-    public function actionEditVehiclesType($id = NULL)
+    public function actionEditVehiclesType($id = null)
     {
         // Set title
         $this->view->title = 'Edit Vehicle Type';
@@ -200,11 +224,13 @@ class VehiclesController extends Controller
 
     /**
      * edit vehicles status
+     *
      * @param null $id
+     *
      * @return string
      */
 
-    public function actionEditVehiclesStatus($id = NULL)
+    public function actionEditVehiclesStatus($id = null)
     {
         // Set title
         $this->view->title = 'Edit Vehicles Status';
@@ -335,7 +361,7 @@ class VehiclesController extends Controller
                 'vehicleHistory' => $vehicleHistory,
                 'vehiclePlating' => $vehiclePlating,
                 'vehicleShipping' => $vehicleShipping,
-                'events'     => $events
+                'events' => $events
             ]);
         }
     }
@@ -357,13 +383,23 @@ class VehiclesController extends Controller
         $vehicleHistoryRecord = VehicleHistory::find()->with(['receivedBy'])->where(['vehicleId' => $vehicleId])->asArray()->one();
 
         // Get record from vehicle_plate_assigned
-        $vehiclePlateAssignedRecord = VehiclePlateAssigned::find()->with(['assignedBy', 'unassignedBy', 'plateNumber', 'plateStatus'])->where(['vehicleId' => $vehicleId])->asArray()->one();
+        $vehiclePlateAssignedRecord = VehiclePlateAssigned::find()->with([
+            'assignedBy',
+            'unassignedBy',
+            'plateNumber',
+            'plateStatus'
+        ])->where(['vehicleId' => $vehicleId])->asArray()->one();
 
         // Get record from vehicle_shipping
         $vehicleShippingRecord = VehicleShipping::find()->with(['event0', 'vehiclePlate'])->where(['vehicleId' => $vehicleId])->asArray()->one();
 
         // Render to view
-        return $this->render('vehicles-display', ['vehicleInventory' => $vehicleInventoryRecord, 'vehicleHistory' => $vehicleHistoryRecord, 'vehiclePlating' => $vehiclePlateAssignedRecord, 'vehicleShipping' => $vehicleShippingRecord]);
+        return $this->render('vehicles-display', [
+            'vehicleInventory' => $vehicleInventoryRecord,
+            'vehicleHistory' => $vehicleHistoryRecord,
+            'vehiclePlating' => $vehiclePlateAssignedRecord,
+            'vehicleShipping' => $vehicleShippingRecord
+        ]);
 
     }
 
@@ -406,8 +442,6 @@ class VehiclesController extends Controller
             $events = $vehicleDetails->vehicleShippings[0]->event0;
 
             $vehicleShipping = isset($vehicleShipping['0']) ? $vehicleShipping['0'] : '';
-
-
 
 
             // Vehicle plates asssigneds
@@ -555,17 +589,23 @@ class VehiclesController extends Controller
             $vehiclePlatingType = $vehiclePlatingType->find()->all();
 
             // Render to view
-            return $this->render('add-vehicles-plate-number-form', ['vehiclePlateNumberForm' => $vehiclePlateNumberForm, 'vehiclePlatingStatus' => $vehiclePlatingStatus, 'vehiclePlatingType' => $vehiclePlatingType]);
+            return $this->render('add-vehicles-plate-number-form', [
+                'vehiclePlateNumberForm' => $vehiclePlateNumberForm,
+                'vehiclePlatingStatus' => $vehiclePlatingStatus,
+                'vehiclePlatingType' => $vehiclePlatingType
+            ]);
         }
     }
 
     /**
      * edit vehicle plate number
      *    edit vehicle plate number records
+     *
      * @param $id
+     *
      * @return string
      */
-    public function actionEditVehiclePlateNumber($id = NULL)
+    public function actionEditVehiclePlateNumber($id = null)
     {
 
         // Set title
@@ -602,13 +642,22 @@ class VehiclesController extends Controller
 
             if (!$id) {
                 // Render to view
-                return $this->render('add-vehicles-plate-number-form', ['vehiclePlateNumberForm' => $vehiclePlateNumber, 'vehiclePlatingStatus' => $vehiclePlatingStatus, 'vehiclePlatingType' => $vehiclePlatingType]);
+                return $this->render('add-vehicles-plate-number-form', [
+                    'vehiclePlateNumberForm' => $vehiclePlateNumber,
+                    'vehiclePlatingStatus' => $vehiclePlatingStatus,
+                    'vehiclePlatingType' => $vehiclePlatingType
+                ]);
             }
 
             $vehiclePlateNumber = $vehiclePlateNumber->findOne($id);
 
             // Render to view
-            return $this->render('edit-vehicles-plate-number-form', ['vehiclePlateNumber' => $vehiclePlateNumber, 'vehiclePlatingStatus' => $vehiclePlatingStatus, 'vehiclePlatingType' => $vehiclePlatingType]);
+            return $this->render('edit-vehicles-plate-number-form',
+                [
+                    'vehiclePlateNumber' => $vehiclePlateNumber,
+                    'vehiclePlatingStatus' => $vehiclePlatingStatus,
+                    'vehiclePlatingType' => $vehiclePlatingType
+                ]);
         }
     }
 
@@ -672,7 +721,7 @@ class VehiclesController extends Controller
      *     This function edit types in Vehicles plating types.
      * @return string
      */
-    public function actionEditVehiclePlatingType($id = NULL)
+    public function actionEditVehiclePlatingType($id = null)
     {
         // Set title
         $this->view->title = 'Edit Vehicle Plating Status';
@@ -764,7 +813,7 @@ class VehiclesController extends Controller
      *     This function edit status in Vehicles plating status.
      * @return string
      */
-    public function actionEditVehiclePlatingStatus($id = NULL)
+    public function actionEditVehiclePlatingStatus($id = null)
     {
         // Set title
         $this->view->title = 'Edit Vehicle Plating Status';
@@ -859,7 +908,7 @@ class VehiclesController extends Controller
      *     This function edit event
      * @return string
      */
-    public function actionEditEvent($id = NULL)
+    public function actionEditEvent($id = null)
     {
         // Set title
         $this->view->title = 'Edit Event';
@@ -901,7 +950,7 @@ class VehiclesController extends Controller
      *     This function view event
      * @return string
      */
-    public function actionViewEvent($id = NULL)
+    public function actionViewEvent($id = null)
     {
         // Set title
         $this->view->title = 'View Event';
@@ -970,7 +1019,14 @@ class VehiclesController extends Controller
         $vehicleAppointments = $vehicleAppointments->find()->all();
 
         // If post is not set than render for edit form
-        return $this->render('view-event', ['event' => $event, 'coordinator' => $coordinator, 'allVinNumber' => $allVinNumber, 'model' => $model, 'vehicleAppointments' => $vehicleAppointments, 'tab' => $tab]);
+        return $this->render('view-event', [
+            'event' => $event,
+            'coordinator' => $coordinator,
+            'allVinNumber' => $allVinNumber,
+            'model' => $model,
+            'vehicleAppointments' => $vehicleAppointments,
+            'tab' => $tab
+        ]);
 
     }
 
@@ -1130,7 +1186,12 @@ class VehiclesController extends Controller
             if (!$id) {
                 // If id is null than go for add
                 // If post is not set than render for add form
-                return $this->render('add-vehicle-appointments', ['vehicleAppointments' => $vehicleAppointments, 'events' => $events, 'vehicleInventory' => $vehicleInventory]);
+                return $this->render('add-vehicle-appointments',
+                    [
+                        'vehicleAppointments' => $vehicleAppointments,
+                        'events' => $events,
+                        'vehicleInventory' => $vehicleInventory
+                    ]);
             }
 
             // Get the particular record
@@ -1138,7 +1199,12 @@ class VehiclesController extends Controller
 
 
             // If post is not set than render for edit form
-            return $this->render('edit-vehicle-appointments', ['vehicleAppointments' => $vehicleAppointments, 'events' => $events, 'vehicleInventory' => $vehicleInventory]);
+            return $this->render('edit-vehicle-appointments',
+                [
+                    'vehicleAppointments' => $vehicleAppointments,
+                    'events' => $events,
+                    'vehicleInventory' => $vehicleInventory
+                ]);
         }
     }
 
@@ -1178,30 +1244,32 @@ class VehiclesController extends Controller
             'pagination' => $pagination,
         ]);
     }
-    public function actionGetEventDetailsById(){
+
+    public function actionGetEventDetailsById()
+    {
 
         $response = array(
             'status' => 0,
-            'message'=> 'Can not find this event details',
+            'message' => 'Can not find this event details',
         );
 
         // Create object
         $events = new Events();
 
-       if(Yii::$app->request->post()) {
-           // Get vin number
-           $eventId = Yii::$app->request->post('eventId');
+        if (Yii::$app->request->post()) {
+            // Get vin number
+            $eventId = Yii::$app->request->post('eventId');
 
-           // Get record by id number
-           $eventDetails = $events->findOne(['id' => $eventId]);
-           if($eventDetails) {
-               $response['status'] = '1';
+            // Get record by id number
+            $eventDetails = $events->findOne(['id' => $eventId]);
+            if ($eventDetails) {
+                $response['status'] = '1';
 
-               $response['Events'] = isset($eventDetails) ? $eventDetails->toArray() : [];
-           }
-       }
+                $response['Events'] = isset($eventDetails) ? $eventDetails->toArray() : [];
+            }
+        }
 
-    echo json_encode($response);
-    die;
+        echo json_encode($response);
+        die;
     }
 }

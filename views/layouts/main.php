@@ -1,12 +1,16 @@
 <?php
 use app\assets\AppAsset;
+use webvimark\modules\UserManagement\components\GhostMenu;
+use webvimark\modules\UserManagement\UserManagementModule;
 use yii\helpers\Html;
+
 
 /* @var $this \yii\web\View */
 /* @var $content string */
 
 AppAsset::register($this);
 ?>
+
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
@@ -15,7 +19,12 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
+    <?php $this->head();
+
+    $this->registerJsFile('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js',
+        ['depends' => [yii\web\JqueryAsset::className()]]); ?>
+    ?>
+
 
     <script type="text/javascript">
         // Assign base url
@@ -26,7 +35,7 @@ AppAsset::register($this);
 
 <?php $this->beginBody() ?>
 <div class="app app-header-fixed ">
-  
+
 
     <!-- header -->
   <header id="header" class="app-header navbar" role="menu">
@@ -62,7 +71,105 @@ AppAsset::register($this);
         </div>
         <!-- / buttons -->
 
-        <!-- nabar right -->
+          <ul class="nav navbar-nav hidden-sm">
+              <li class="dropdown pos-stc">
+                  <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                      <span>Admin</span>
+                      <span class="caret"></span>
+                  </a>
+
+                  <div class="dropdown-menu wrapper w-full bg-white">
+                      <div class="row">
+                          <div class="col-sm-4">
+                              <div class="m-l-xs m-t-xs m-b-xs font-bold">Backend routes <span
+                                      class="badge badge-sm bg-success"></span>
+                              </div>
+                              <div class="row">
+                                  <div class="col-xs-6 adminPanelWidget">
+                                      <?php
+                                      echo GhostMenu::widget([
+                                          'encodeLabels' => false,
+                                          'activateParents' => true,
+                                          'items' => UserManagementModule::menuItems()
+
+                                      ]);
+
+                                      ?>
+                                  </div>
+                                  <div class="col-xs-6">
+
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-sm-4 b-l b-light">
+                              <div class="m-l-xs m-t-xs m-b-xs font-bold">Frontend routes <span
+                                      class="label label-sm bg-primary"></span></div>
+                              <div class="row">
+                                  <div class="col-xs-6 adminPanelWidget">
+                                      <?php
+                                      echo GhostMenu::widget([
+                                          'encodeLabels' => false,
+                                          'activateParents' => true,
+                                          'items' => [
+
+                                              [
+                                                  'label' => '',
+                                                  'items' => [
+                                                      ['label' => 'Login', 'url' => ['/user-management/auth/login']],
+                                                      ['label' => 'Logout', 'url' => ['/user-management/auth/logout']],
+                                                      [
+                                                          'label' => 'Registration',
+                                                          'url' => ['/user-management/auth/registration']
+                                                      ],
+                                                      [
+                                                          'label' => 'Change own password',
+                                                          'url' => ['/user-management/auth/change-own-password']
+                                                      ],
+                                                      [
+                                                          'label' => 'Password recovery',
+                                                          'url' => ['/user-management/auth/password-recovery']
+                                                      ],
+                                                      [
+                                                          'label' => 'E-mail confirmation',
+                                                          'url' => ['/user-management/auth/confirm-email']
+                                                      ],
+                                                  ],
+                                              ],
+                                          ],
+
+                                      ]);
+
+                                      ?>
+                                  </div>
+                                  <div class="col-xs-6">
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-sm-4 b-l b-light">
+                              <div class="m-l-xs m-t-xs m-b-sm font-bold">Analysis</div>
+                              <div class="text-center">
+                                  <div class="inline">
+                                      <div ui-jq="easyPieChart" ui-options="{
+                          percent: 65,
+                          lineWidth: 50,
+                          trackColor: '#e8eff0',
+                          barColor: '#23b7e5',
+                          scaleColor: false,
+                          size: 100,
+                          rotate: 90,
+                          lineCap: 'butt',
+                          animate: 2000
+                        }">
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </li>
+          </ul>
+
+          <!-- nabar right -->
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
             <a href="#" data-toggle="dropdown" class="dropdown-toggle clear" data-toggle="dropdown">
@@ -79,6 +186,7 @@ AppAsset::register($this);
       <!-- / navbar collapse -->
   </header>
   <!-- / header -->
+
 
     <!-- aside -->
   <aside id="aside" class="app-aside hidden-xs bg-dark">
@@ -142,8 +250,9 @@ AppAsset::register($this);
               <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                 <span>Components</span>
               </li>
+
               <li>
-                <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicle/save" >      
+                  <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicle/save">
                   <span class="pull-right text-muted">
             
                   </span>
@@ -151,8 +260,9 @@ AppAsset::register($this);
                   <span>Vehicles Receiving</span>
                 </a>
               </li>
+
               <li>
-                <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/events" >      
+                  <a href="<?php echo yii::$app->request->baseUrl; ?>/index.php/vehicles/events">
                   <span class="pull-right text-muted">
             
                   </span>
@@ -160,11 +270,12 @@ AppAsset::register($this);
                   <span>Event Management</span>
                 </a>
               </li>
-               <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+
+              <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                 <span>Vehicle Management</span>
               </li>
               <li>
-                <a href class="auto">      
+                  <a href class="auto">
                   <span class="pull-right text-muted">
                     <i class="fa fa-fw fa-angle-right text"></i>
                     <i class="fa fa-fw fa-angle-down text-active"></i>
